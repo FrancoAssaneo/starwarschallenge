@@ -31,3 +31,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archiveBaseName = 'starwars-app'
+	archiveVersion = '0.0.1'
+}
