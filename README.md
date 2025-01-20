@@ -153,5 +153,5 @@ gradle test
 ```
 
 ## Autor
-**Tu Nombre** - [LinkedIn](https://www.linkedin.com/in/franco-assaneo-421194156/) - [GitHub](https://github.com/FrancoAssaneo)
+**Franco Assaneo** - [LinkedIn](https://www.linkedin.com/in/franco-assaneo-421194156/) - [GitHub](https://github.com/FrancoAssaneo)
 
