@@ -1,1 +1,1 @@
-web: java -jar build/libs/starwars-app-0.0.1.jar
+web: java -Dserver.port=$PORT build/libs/starwars-app-0.0.1.jar
