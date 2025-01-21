@@ -29,7 +29,11 @@ Este proyecto es una aplicación Java basada en la arquitectura MVC que consume 
 │   │   ├── StarshipController.java
 │   │   ├── VehicleController.java
 │   ├── model
+│   │   ├── Auth
+│   │   │   ├── AuthRequest.java
+│   │   │   ├── AuthResponse.java
 │   │   ├── film
+│   │   │   ├── FilmByIdResponse.java
 │   │   │   ├── FilmDTO.java
 │   │   │   ├── FilmListDataDTO.java
 │   │   │   ├── FilmResponseDTO.java
@@ -46,6 +50,7 @@ Este proyecto es una aplicación Java basada en la arquitectura MVC que consume 
 │   │   │   ├── VehicleListResponseDTO.java
 │   │   │   ├── VehicleResponseDTO.java
 │   ├── service
+│   │   ├── CustomUserDetailsService.java
 │   │   ├── FilmService.java
 │   │   ├── PeopleService.java
 │   │   ├── StarshipService.java
