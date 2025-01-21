@@ -19,6 +19,13 @@ public class PeopleListResponseDTO {
         //No-Args Constructor
     }
 
+    public PeopleListResponseDTO(String message, int totalRecords, int totalPages, List<PeopleListDataDTO> results) {
+        this.message = message;
+        this.totalRecords = totalRecords;
+        this.totalPages = totalPages;
+        this.results = results;
+    }
+
     public String getMessage() {
         return message;
     }

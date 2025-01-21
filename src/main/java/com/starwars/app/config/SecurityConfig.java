@@ -1,5 +1,6 @@
 package com.starwars.app.config;
 
+import com.starwars.app.service.CustomUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final PasswordEncoder passwordEncoder;
 
@@ -39,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @param passwordEncoder the password encoder used for encoding passwords
      */
     public SecurityConfig(@Lazy JwtAuthenticationFilter jwtAuthenticationFilter,
-                          @Lazy UserDetailsService userDetailsService,
+                          @Lazy CustomUserDetailsService userDetailsService,
                           @Lazy PasswordEncoder passwordEncoder) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;

@@ -16,6 +16,11 @@ public class FilmResponseDTO {
         //No-Args Constructor
     }
 
+    public FilmResponseDTO(String message, List<FilmListDataDTO> result) {
+        this.message = message;
+        this.result = result;
+    }
+
     public String getMessage() {
         return message;
     }

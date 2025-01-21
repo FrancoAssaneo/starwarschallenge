@@ -2,6 +2,7 @@ package com.starwars.app.service;
 
 import com.starwars.app.config.SwApiConfig;
 import com.starwars.app.model.Film.FilmByIdResponseDTO;
+import com.starwars.app.model.Film.FilmListDataDTO;
 import com.starwars.app.model.Film.FilmResponseDTO;
 import com.starwars.app.util.RestTemplateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service class for retrieving film data from the Star Wars API.
@@ -35,13 +40,39 @@ public class FilmService {
     }
 
     /**
-     * Retrieves a paginated list of films from the Star Wars API.
+     * Retrieves a paginated list of films from the Star Wars API (SWAPI).
+     * Optionally filters the results by title if provided.
+     *
+     * @param page  the page number to retrieve
+     * @param size  the number of records per page
+     * @param title (optional) the title to filter the results by
+     * @return a {@link FilmResponseDTO} containing the filtered results
+     */
+    public FilmResponseDTO getFilms(int page, int size, String title) {
+        FilmResponseDTO responseBody = fetchFilmsFromAPI(page, size);
+        if (responseBody == null || responseBody.getResult() == null) {
+            return new FilmResponseDTO("ok", Collections.emptyList());
+        }
+        List<FilmListDataDTO> filteredResults = responseBody.getResult();
+
+        if (title != null && !title.isEmpty()) {
+            filteredResults = filterFilmsByTitle(filteredResults, title);
+        }
+
+        int totalRecords = filteredResults.size();
+        int totalPages = (int) Math.ceil((double) totalRecords / size);
+
+        return new FilmResponseDTO("ok", filteredResults);
+    }
+
+    /**
+     * Fetches a paginated list of films from the Star Wars API (SWAPI).
      *
      * @param page the page number to retrieve
      * @param size the number of records per page
-     * @return a {@link FilmResponseDTO} containing the list of films
+     * @return a {@link FilmResponseDTO} containing the fetched data
      */
-    public FilmResponseDTO getFilms(int page, int size) {
+    private FilmResponseDTO fetchFilmsFromAPI(int page, int size) {
         String url = UriComponentsBuilder.fromHttpUrl(swApiConfig.getFilmUrl())
                 .queryParam("page", page)
                 .queryParam("limit", size)
@@ -51,6 +82,20 @@ public class FilmService {
                 url, HttpMethod.GET, RestTemplateUtils.createHttpEntity(), FilmResponseDTO.class);
 
         return response.getBody();
+    }
+
+    /**
+     * Filters a list of films based on the provided title.
+     * The filter is case-insensitive and performs a partial match.
+     *
+     * @param films the list of films to filter
+     * @param title the title to filter by
+     * @return a filtered list of {@link FilmListDataDTO} containing only matching results
+     */
+    private List<FilmListDataDTO> filterFilmsByTitle(List<FilmListDataDTO> films, String title) {
+        return films.stream()
+                .filter(film -> film.getFilm().getTitle().toLowerCase().contains(title.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     /**

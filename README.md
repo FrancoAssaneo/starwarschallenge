@@ -72,7 +72,7 @@ swapi.vehicle-url=https://www.swapi.tech/api/vehicles/
 
 Permite autenticar un usuario y obtener un token JWT.
 
-- **Requiere enviar el `username` en el cuerpo con formato `x-www-form-urlencoded`.**
+- **Requiere enviar el `username` y `password` en el body de la petición (los mismos se encuentran en el application-properties) .**
 - Respuesta:
 
 ```json
@@ -86,17 +86,19 @@ Ejemplo de petición con `curl`:
 ```sh
 curl -X POST http://localhost:8080/auth/login \
      -H "Content-Type: application/x-www-form-urlencoded" \
-     -d "username=testuser"
+     -d '{"username":"admin","password":"admin123"}'
 ```
 
 - **UNA VEZ REALIZADA LA AUTENTICACIÓN SE DEBE ENVÍAR BEARER TOKEN OBTENIDO EN LOS SIGUIENTES ENDPOINTS**
 
 ### Films
 - **GET /films/all?page=1&size=10**: Obtiene una lista de películas paginada.
+- **GET /films/all?page=1&size=10&title=new**: Obtiene una lista de películas paginada y filtrada por titulo.
 - **GET /films/{id}**: Obtiene información detallada de una película por ID.
 
 ### People
 - **GET /people/all?page=1&size=10**: Obtiene una lista de personajes paginada.
+- **GET /people/all?page=1&size=10&name=luke**: Obtiene una lista de personajes paginada y filtrada por nombre.
 - **GET /people/{id}**: Obtiene información detallada de un personaje por ID.
 
 ### Starships
@@ -120,7 +122,7 @@ Cada servicio consume la API de Star Wars a través de `RestTemplate` y está co
 
 ### Ejemplo de Consumo de API
 ```java
-public FilmResponseDTO getFilms(int page, int size) {
+private FilmResponseDTO fetchFilmsFromAPI(int page, int size) {
     String url = UriComponentsBuilder.fromHttpUrl(swApiConfig.getFilmUrl())
             .queryParam("page", page)
             .queryParam("limit", size)
@@ -128,7 +130,7 @@ public FilmResponseDTO getFilms(int page, int size) {
 
     ResponseEntity<FilmResponseDTO> response = restTemplate.exchange(
             url, HttpMethod.GET, RestTemplateUtils.createHttpEntity(), FilmResponseDTO.class);
-    
+
     return response.getBody();
 }
 ```
@@ -140,8 +142,8 @@ public FilmResponseDTO getFilms(int page, int size) {
 
 ### Construcción y Ejecución
 ```sh
-git clone https://github.com/tu-repo/starwars-api-mvc.git
-cd starwars-api-mvc
+git clone https://github.com/FrancoAssaneo/starwarschallenge.git
+cd starwarschallenge
 gradle build
 gradle bootRun
 ```

@@ -26,8 +26,9 @@ public class FilmController {
 
     @GetMapping("/all")
     public ResponseEntity<FilmResponseDTO> getFilms(@RequestParam(defaultValue = "1") int page,
-                                                    @RequestParam(defaultValue = "10") int size) {
-        FilmResponseDTO filmResponseDTO =  filmService.getFilms(page, size);
+                                                    @RequestParam(defaultValue = "10") int size,
+                                                    @RequestParam(required = false) String title) {
+        FilmResponseDTO filmResponseDTO =  filmService.getFilms(page, size, title);
         return ResponseEntity.ok(filmResponseDTO);
     }
 

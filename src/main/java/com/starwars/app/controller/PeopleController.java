@@ -26,8 +26,9 @@ public class PeopleController {
 
     @GetMapping("/all")
     public ResponseEntity<PeopleListResponseDTO> getPeople(@RequestParam(defaultValue = "1") int page,
-                                                           @RequestParam(defaultValue = "10") int size) {
-        PeopleListResponseDTO peopleListResponseDTO =  peopleService.getPeople(page, size);
+                                                           @RequestParam(defaultValue = "10") int size,
+                                                           @RequestParam(required = false) String name) {
+        PeopleListResponseDTO peopleListResponseDTO =  peopleService.getPeople(page, size, name);
         return ResponseEntity.ok(peopleListResponseDTO);
     }
 
